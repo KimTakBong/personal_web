@@ -103,7 +103,7 @@ button{font-family:inherit}
 .project.preview .project-visual h2,.project.open .project-visual h2,.project.inview .project-visual h2{transform:translateX(6px)}
 .project.flip.preview .project-visual h2,.project.flip.open .project-visual h2,.project.flip.inview .project-visual h2{transform:translateX(-6px)}
 .project-visual h2 span{display:block}
-.project-hint{position:absolute;z-index:4;right:18px;bottom:18px;border:0;font-family:inherit;cursor:pointer;display:inline-flex;align-items:center;gap:8px;background:#0c0e0b;color:var(--paper);padding:10px 14px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 10px 24px rgba(12,14,11,.22)}
+.project-hint{position:absolute;z-index:4;right:18px;bottom:18px;border:0;font-family:inherit;cursor:pointer;display:none;align-items:center;gap:8px;background:#0c0e0b;color:var(--paper);padding:10px 14px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 10px 24px rgba(12,14,11,.22)}
 .project-hint svg{width:14px;height:14px;transition:transform .35s;flex:none}
 .project.open .project-hint{background:var(--green);color:#0c0e0b}
 .project.open .project-hint svg{transform:rotate(180deg)}
@@ -178,12 +178,12 @@ button{font-family:inherit}
 .project.flip .chat{left:4%}
 .project.flip .system{left:7%}
 .project.flip .system-panel{transform:rotate(3deg)}
-.project.flip .project-detail>div{grid-template-columns:1fr 40%;padding:0 11.9% 0 12px}
+.project.flip .project-detail>div{grid-template-columns:1fr 40%;padding:0 10% 0 8%}
 .project.flip .project-short{grid-column:2;grid-row:1}
 .project.flip .project-more{grid-column:1;grid-row:1}
-.project-detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .55s cubic-bezier(.2,.7,.2,1)}
+.project-detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows 1.05s cubic-bezier(.2,.7,.2,1)}
 .project.open .project-detail{grid-template-rows:1fr}
-.project-detail>div{min-height:0;overflow:hidden;display:grid;grid-template-columns:40% 1fr;column-gap:7%;padding:0 12px 0 11.9%;transition:padding-bottom .55s cubic-bezier(.2,.7,.2,1)}
+.project-detail>div{min-height:0;overflow:hidden;display:grid;grid-template-columns:40% 1fr;column-gap:7%;padding:0 12px 0 11.9%;transition:padding-bottom 1.05s cubic-bezier(.2,.7,.2,1)}
 .project.open .project-detail>div{padding-bottom:50px}
 .project-short{color:#172015;max-width:380px;margin:0;font-size:19px;line-height:1.28;letter-spacing:-.02em;font-weight:550}
 .project-body{color:#5c665b;max-width:400px;margin:0;font-size:13.5px;line-height:1.6}
@@ -200,12 +200,13 @@ button{font-family:inherit}
 /* 2.1 stamp effect on the OOH board */
 .stamp{position:absolute;z-index:3;right:6%;bottom:16%;padding:8px 12px 7px;border:2px solid var(--green);border-radius:4px;color:var(--green);font-size:11px;font-weight:800;letter-spacing:.14em;text-align:center;line-height:1.25;opacity:0;transform:rotate(-12deg) scale(2.6);pointer-events:none;text-shadow:none}
 .stamp small{display:block;font-size:7px;letter-spacing:.22em;font-weight:700}
-.project.inview .stamp{animation:stampIn .55s cubic-bezier(.2,.9,.3,1.4) .25s both}
-@keyframes stampIn{0%{opacity:0;transform:rotate(-26deg) scale(2.6)}60%{opacity:1;transform:rotate(-12deg) scale(.94)}100%{opacity:.92;transform:rotate(-12deg) scale(1)}}
-.project.inview .board-frame{animation:boardShake .5s ease .3s}
-@keyframes boardShake{0%,100%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}55%{transform:translate(-1px,1px)}}
-/* 2.2 animated ledger percentage */
-.amount{transition:color .3s}
+.project.inview .stamp{animation:stampIn 1.5s cubic-bezier(.2,.9,.3,1.4) infinite}
+@keyframes stampIn{0%{opacity:0;transform:rotate(-26deg) scale(2.6)}16%{opacity:1;transform:rotate(-12deg) scale(.94)}24%{opacity:.92;transform:rotate(-12deg) scale(1)}76%{opacity:.92;transform:rotate(-12deg) scale(1)}90%,100%{opacity:0;transform:rotate(-12deg) scale(1.05)}}
+.project.inview .board-frame{animation:boardShake 1.5s ease infinite}
+@keyframes boardShake{0%,100%{transform:translate(0,0)}6%{transform:translate(1px,-1px)}12%{transform:translate(-1px,1px)}18%{transform:translate(0,0)}}
+/* 2.2 animated ledger percentage — flip-clock digits */
+.amount{transition:color .3s;perspective:520px}
+.amount .fd{display:inline-block;will-change:transform}
 /* 2.3 digital signature: seal & card swap front/back, check draws itself */
 .trust-seal,.trust-card{transition:transform .7s cubic-bezier(.3,.7,.25,1)}
 .trust.swap .trust-seal{transform:translate(42%,52%) scale(.84) rotate(7deg);z-index:1}
@@ -225,8 +226,10 @@ button{font-family:inherit}
 .catalog-card.pos-front .cinner{opacity:1}
 .catalog-card.pos-mid{z-index:2;background:#ced3ca;transform:rotate(5deg) translate(14px,-5px)}
 .catalog-card.pos-back{z-index:1;background:#a6ada2;transform:rotate(15deg) translate(36px,-10px)}
+.catalog-card.pos-deep{z-index:0;background:#969e93;transform:rotate(19deg) translate(48px,-14px)}
 .project.flip .catalog-card.pos-mid{transform:rotate(-5deg) translate(-14px,-5px)}
 .project.flip .catalog-card.pos-back{transform:rotate(-15deg) translate(-36px,-10px)}
+.project.flip .catalog-card.pos-deep{transform:rotate(-19deg) translate(-48px,-14px)}
 .project-visual:hover .catalog-card.pos-mid{transform:rotate(9deg) translate(26px,-12px)}
 .project-visual:hover .catalog-card.pos-back{transform:rotate(22deg) translate(58px,-20px)}
 .project-visual:hover .catalog-card.pos-front{transform:rotate(-2deg) translate(-8px,4px)}
@@ -241,8 +244,8 @@ button{font-family:inherit}
 @keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
 /* 2.6 automation: active step cycles, WORKING… shows before it moves on */
 .system-line{padding:9px 0}
-.system-line .working{margin-left:auto;font-style:normal;font-size:8px;font-weight:800;letter-spacing:.14em;color:var(--green);opacity:0;transition:opacity .25s;animation:workBlink 1s steps(2) infinite}
-.system-line.active .working{opacity:1}
+.system-line .working{margin-left:auto;font-style:normal;font-size:8px;font-weight:800;letter-spacing:.14em;color:var(--green);opacity:0;transition:opacity .25s}
+.system-line.active .working{opacity:1;animation:workBlink 1s steps(2) infinite}
 @keyframes workBlink{50%{opacity:.35}}
 
 /* PROFILE */
@@ -305,9 +308,9 @@ footer{display:flex;justify-content:space-between;gap:16px;padding:19px 4.6vw;co
 @media (max-width:760px){
   .nav{height:64px;padding:0 5vw}.desktop-nav{display:none}.nav-tools{gap:12px}.menu-button{display:block}
   .hero{min-height:760px;padding:88px 5vw 28px}.hero-meta>span:last-child{display:none}.hero-main{grid-template-columns:1fr;gap:36px;padding:24px 0 10px;align-items:start}.hero-name{font-size:clamp(6.2rem,27vw,11rem)}.charging-light{width:68vw;left:auto;right:-26vw;top:36%;opacity:.5}.hero-bottom{flex-direction:column;align-items:flex-start;gap:22px}.hero-bottom p{width:290px}.scroll-btn{align-self:flex-end}
-  .work{padding:84px 5vw 76px}.work-heading{display:block}.work-heading h1{margin-top:20px;font-size:clamp(2.3rem,9vw,3.4rem)}.work-heading p{font-size:15px}.project-list{margin-top:56px}.project-bar{grid-template-columns:40px 1fr;padding:15px 0}.project-category{font-size:8px}.project-visual{min-height:330px;padding:24px 14px 64px 40px}.project-visual::before{background:radial-gradient(85% 80% at 12% 60%,rgba(233,236,229,.97) 0%,rgba(233,236,229,.8) 38%,rgba(233,236,229,.4) 62%,rgba(233,236,229,0) 84%),linear-gradient(90deg,rgba(233,236,229,.5) 0%,rgba(233,236,229,0) 78%)}.project-visual h2{font-size:clamp(2.9rem,13vw,5.2rem);max-width:88vw}.project-hint{right:12px;bottom:12px}
+  .work{padding:84px 5vw 76px}.work-heading{display:block}.work-heading h1{margin-top:20px;font-size:clamp(2.3rem,9vw,3.4rem)}.work-heading p{font-size:15px}.project-list{margin-top:56px}.project-bar{grid-template-columns:40px 1fr;padding:15px 0}.project-category{font-size:8px}.project-visual{min-height:330px;padding:24px 14px 64px 40px}.project-visual::before{background:radial-gradient(85% 80% at 12% 60%,rgba(233,236,229,.97) 0%,rgba(233,236,229,.8) 38%,rgba(233,236,229,.4) 62%,rgba(233,236,229,0) 84%),linear-gradient(90deg,rgba(233,236,229,.5) 0%,rgba(233,236,229,0) 78%)}.project-visual h2{font-size:clamp(2.9rem,13vw,5.2rem);max-width:88vw}.project-hint{display:inline-flex;right:12px;bottom:12px}
   .board{width:74vw;right:-6%;height:66%}.ledger{width:70vw;right:-10%}.trust{width:72vw;right:-14%}.catalog{width:65vw;right:-5%}.chat{width:75vw;right:-16%}.system{width:72vw;right:-12%}
-  .project.flip .project-visual{padding:24px 40px 64px 14px}.project.flip .project-visual::before{background:radial-gradient(85% 80% at 88% 60%,rgba(233,236,229,.97) 0%,rgba(233,236,229,.8) 38%,rgba(233,236,229,.4) 62%,rgba(233,236,229,0) 84%),linear-gradient(270deg,rgba(233,236,229,.5) 0%,rgba(233,236,229,0) 78%)}.project.flip .project-hint{right:auto;left:12px}.project.flip .board{left:-6%}.project.flip .ledger{left:-10%}.project.flip .trust{left:-14%}.project.flip .catalog{left:-5%}.project.flip .chat{left:-16%}.project.flip .system{left:-12%}.project.flip .project-detail>div{padding-left:0;padding-right:40px}
+  .project.flip .project-visual{padding:24px 40px 64px 14px}.project.flip .project-visual::before{background:radial-gradient(85% 80% at 88% 60%,rgba(233,236,229,.97) 0%,rgba(233,236,229,.8) 38%,rgba(233,236,229,.4) 62%,rgba(233,236,229,0) 84%),linear-gradient(270deg,rgba(233,236,229,.5) 0%,rgba(233,236,229,0) 78%)}.project.flip .project-hint{right:auto;left:12px}.project.flip .board{left:-6%}.project.flip .ledger{left:-10%}.project.flip .trust{left:-14%}.project.flip .catalog{left:-5%}.project.flip .chat{left:-16%}.project.flip .system{left:-12%}.project.flip .project-detail>div{padding-left:24px;padding-right:24px}
   .project-detail>div{display:block;padding-left:40px;padding-right:0}.project.open .project-detail>div{padding-bottom:36px}.project-short{max-width:300px;font-size:17px}.project-body{margin-top:18px;max-width:300px}.facts{margin-top:24px;max-width:290px}
   .profile{padding:96px 5vw 76px}.profile-intro{display:block;margin:38px 0 80px}.profile-intro h2{font-size:clamp(3.6rem,14.5vw,6.4rem)}.profile-intro p{margin-top:28px}.profile-points>div{grid-template-columns:36px 1fr;padding:18px 0 28px}.profile-points p{grid-column:2}
   .hero-reel{max-width:440px;padding:2px 0 0}.text-stream{--reel-font:clamp(2.2rem,11vw,3.4rem)}
@@ -431,12 +434,12 @@ id:{nav:["Karya","Profil","Kontak"],availability:"Lagi open buat kerjaan yang co
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function artHTML(type){
   if(type==="board")return '<div class="art board" aria-hidden="true"><div class="board-frame"><small>WORK / IN MOTION</small><b>ASSET<br>CONTRACT<br>REVENUE</b><em></em><span>CONNECTED OPERATIONS</span><div class="stamp">CONNECTED<small>OPERATIONS ✓ LIVE</small></div></div></div>';
-  if(type==="ledger")return '<div class="art ledger" aria-hidden="true"><div class="ledger-sheet"><small>FINANCIAL POSITION</small><div class="amount">+ 12.8%</div><div class="ledger-lines"><i></i><i></i><i></i><i></i></div><span>01. INVOICE &nbsp;&nbsp; 02. PAYMENT &nbsp;&nbsp; 03. REPORT</span></div><div class="ledger-disc"></div></div>';
+  if(type==="ledger")return '<div class="art ledger" aria-hidden="true"><div class="ledger-sheet"><small>FINANCIAL POSITION</small><div class="amount" data-val="+ 12.8%">+ 12.8%</div><div class="ledger-lines"><i></i><i></i><i></i><i></i></div><span>01. INVOICE &nbsp;&nbsp; 02. PAYMENT &nbsp;&nbsp; 03. REPORT</span></div><div class="ledger-disc"></div></div>';
   if(type==="trust")return '<div class="art trust" aria-hidden="true"><div class="trust-seal"><span>IDENTITY</span><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.5"/></svg></b><span>VERIFIED</span></div><div class="trust-card">CERTIFICATE<br><strong>ACTIVE</strong><i></i></div></div>';
   if(type==="catalog"){
-    var heads=[["CATALOG","Things<br>in their<br>place."],["INVENTORY","Every SKU,<br>accounted<br>for."],["PRODUCTS","Stock in<br>sync,<br>always."]];
+    var heads=[["CATALOG","Things<br>in their<br>place."],["INVENTORY","Every SKU,<br>accounted<br>for."],["PRODUCTS","Stock in<br>sync,<br>always."],["SHELF","Shelves<br>that stay<br>honest."],["LISTINGS","Every listing,<br>right where<br>it belongs."],["VARIANTS","Sizes,<br>colors,<br>sorted."],["PRICING","Prices set,<br>nothing<br>drifting."],["RESTOCK","Back in<br>stock,<br>on time."],["SEARCH","Find any<br>item in<br>seconds."],["ARCHIVE","Nothing<br>lost,<br>ever."]];
     var cards=heads.map(function(h,i){
-      var pos=i===0?"pos-back":(i===1?"pos-mid":"pos-front");
+      var pos=i===0?"pos-front":(i===1?"pos-mid":(i===2?"pos-back":"pos-deep"));
       return '<div class="catalog-card '+pos+'"><div class="cinner"><small>'+h[0]+'</small><b>'+h[1]+'</b><div class="cbars"><i></i><i></i><i></i></div></div></div>';
     }).join("");
     return '<div class="art catalog" aria-hidden="true">'+cards+'<span></span></div>';
@@ -607,37 +610,88 @@ function render(){
     var idx=parseInt(article.querySelector("[data-idx]").getAttribute("data-idx"),10);
     var visual=article.querySelector(".project-visual");
     if(visual){
+      var hoverTimer=null;
       visual.addEventListener("click",function(){ toggleIdx(idx,article); });
-      visual.addEventListener("mouseenter",function(){ if(activeIdx!==idx) article.classList.add("preview"); });
-      visual.addEventListener("mouseleave",function(){ article.classList.remove("preview"); });
+      visual.addEventListener("mouseenter",function(){
+        if(activeIdx===idx)return;
+        window.clearTimeout(hoverTimer);
+        hoverTimer=window.setTimeout(function(){ if(activeIdx!==idx) article.classList.add("preview"); },1000);
+      });
+      visual.addEventListener("mouseleave",function(){ window.clearTimeout(hoverTimer); article.classList.remove("preview"); });
     }
     var h=article.querySelector(".project-visual h2");
     if(h) h.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleIdx(idx,article); } });
   });
   observeProjects();
+  initCatalog();
   startChat();
   document.getElementById("langEn").classList.toggle("active",lang==="en");
   document.getElementById("langId").classList.toggle("active",lang==="id");
   document.getElementById("langEn").setAttribute("aria-pressed",lang==="en"?"true":"false");
   document.getElementById("langId").setAttribute("aria-pressed",lang==="id"?"true":"false");
 }
-/* WORK ART — 1.5s ticker: ledger %, signature swap, catalog cycle, automation steps */
-var artTick=0;
+/* WORK ART — staggered tickers: each artwork runs on its own beat (1.3s / 1.5s / 1.7s) */
+function artPaused(){ return flipReduced||document.hidden; }
+/* ledger % — flip-clock: each digit flips over, swapping its value edge-on */
+function flipAmount(el,str){
+  var old=el.getAttribute("data-val")||"";
+  el.setAttribute("data-val",str);
+  el.innerHTML="";
+  for(var i=0;i<str.length;i++){
+    (function(ch,oldCh,delay){
+      var s=document.createElement("span");
+      s.className="fd";
+      var startCh=oldCh!==undefined?oldCh:ch;
+      s.textContent=startCh===" "?"\u00A0":startCh;
+      el.appendChild(s);
+      if(flipReduced||typeof s.animate!=="function"){ s.textContent=ch===" "?"\u00A0":ch; return; }
+      s.animate([
+        {transform:"rotateX(0deg)"},
+        {transform:"rotateX(88deg)",offset:.5},
+        {transform:"rotateX(0deg)"}
+      ],{duration:480,delay:delay,easing:"ease-in-out"});
+      window.setTimeout(function(){ s.textContent=ch===" "?"\u00A0":ch; },delay+240);
+    })(str.charAt(i),old.charAt(i)||undefined,i*45);
+  }
+}
 window.setInterval(function(){
-  if(flipReduced||document.hidden)return;
-  artTick++;
+  if(artPaused())return;
   var amt=document.querySelector(".ledger .amount");
-  if(amt) amt.textContent="+ "+(12.8+Math.random()*87.2).toFixed(1)+"%";
+  if(amt) flipAmount(amt,"+ "+(12.8+Math.random()*87.2).toFixed(1)+"%");
+},1700);
+window.setInterval(function(){
+  if(artPaused())return;
   var tr=document.querySelector(".trust");
   if(tr) tr.classList.toggle("swap");
-  var cat=document.querySelectorAll(".catalog-card");
-  if(cat.length===3){
-    var pos=["pos-back","pos-mid","pos-front"];
-    cat.forEach(function(c,i){ c.classList.remove("pos-back","pos-mid","pos-front"); c.classList.add(pos[(i+artTick)%3]); });
-  }
-  var lines=document.querySelectorAll(".system-line");
-  if(lines.length) lines.forEach(function(l,i){ l.classList.toggle("active",i===artTick%lines.length); });
+},1300);
+/* catalog — 10 sheets: front goes to the back, next front is picked at random */
+var catOrder=[];
+function initCatalog(){
+  catOrder=Array.prototype.slice.call(document.querySelectorAll(".catalog-card"));
+}
+function cycleCatalog(){
+  if(catOrder.length<3||!catOrder[0].isConnected){ initCatalog(); if(catOrder.length<3)return; }
+  catOrder.push(catOrder.shift());
+  var j=1+Math.floor(Math.random()*(catOrder.length-1));
+  var tmp=catOrder[0]; catOrder[0]=catOrder[j]; catOrder[j]=tmp;
+  catOrder.forEach(function(c,rank){
+    c.classList.remove("pos-front","pos-mid","pos-back","pos-deep");
+    c.classList.add(rank===0?"pos-front":rank===1?"pos-mid":rank===2?"pos-back":"pos-deep");
+  });
+}
+window.setInterval(function(){
+  if(artPaused())return;
+  cycleCatalog();
 },1500);
+/* automation steps — own beat, WORKING… blinks only on the active line */
+var sysTick=2;
+window.setInterval(function(){
+  if(artPaused())return;
+  var lines=document.querySelectorAll(".system-line");
+  if(!lines.length)return;
+  sysTick=(sysTick+1)%lines.length;
+  lines.forEach(function(l,i){ l.classList.toggle("active",i===sysTick); });
+},1700);
 /* WORK ART — AI chat: bubbles typed letter by letter, replies keep coming */
 var chatRun=0;
 function startChat(){
