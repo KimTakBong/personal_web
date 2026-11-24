@@ -183,6 +183,24 @@ button{font-family:inherit}
 .profile-points h3{margin:0;font-size:21px;letter-spacing:-.03em;font-weight:650}
 .profile-points p{max-width:420px;margin:0;color:#a8b0a6;font-size:13.5px;line-height:1.6}
 
+/* TEXT REEL */
+.reel{position:relative;overflow:hidden;padding:118px 4.6vw 108px;background:var(--black);border-top:1px solid var(--line)}
+.reel-glow{position:absolute;left:50%;top:50%;width:min(62vw,760px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(202,255,114,.10),rgba(202,255,114,.02) 42%,transparent 68%);pointer-events:none}
+.text-stream{--reel-font:clamp(2.6rem,7vw,5.4rem);position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;min-width:0;text-align:center}
+.text-stream-prefix{margin:0;color:var(--quiet);font-size:clamp(.65rem,1.5vw,.85rem);font-weight:400;letter-spacing:.25em;text-transform:uppercase;opacity:.75}
+.text-stream-viewport{position:relative;width:100%;flex-shrink:0;height:calc(var(--reel-font)*2.2);overflow:hidden;text-align:center;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,black 30%,black 70%,transparent 100%);mask-image:linear-gradient(to bottom,transparent 0%,black 30%,black 70%,transparent 100%)}
+.text-stream-track{position:absolute;left:0;right:0;top:0;display:flex;flex-direction:column;font-size:var(--reel-font);font-weight:700;line-height:1.1;letter-spacing:-.045em;color:var(--paper);will-change:transform}
+.text-stream-copy{display:flex;flex-direction:column}
+.text-stream-item{padding:6px 0;white-space:nowrap}
+.text-stream-item i{color:var(--green);font-style:normal}
+.reel-hint{position:relative;margin:26px 0 0;color:var(--quiet-2);font-size:10px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.reel-hint::before,.reel-hint::after{content:"";display:block;width:34px;height:1px;background:rgba(233,236,229,.18)}
+@media (prefers-reduced-motion:reduce){
+  .text-stream-viewport{display:flex;align-items:center;-webkit-mask-image:none!important;mask-image:none!important}
+  .text-stream-track{position:relative!important;transform:none!important}
+  .text-stream-copy+.text-stream-copy{display:none!important}
+}
+
 /* CONTACT */
 .contact{min-height:740px;position:relative;overflow:hidden;display:flex;align-items:center;padding:128px 4.6vw;color:#0b0d09;background:var(--green-dim)}
 .contact:after{content:"";position:absolute;inset:0;opacity:.07;background-image:linear-gradient(90deg,transparent 49.4%,#222 50%,transparent 50.6%),linear-gradient(transparent 49.4%,#222 50%,transparent 50.6%);background-size:64px 64px;-webkit-mask-image:linear-gradient(to right,black,transparent 74%);mask-image:linear-gradient(to right,black,transparent 74%);pointer-events:none}
@@ -217,6 +235,7 @@ footer{display:flex;justify-content:space-between;gap:16px;padding:19px 4.6vw;co
   .board{width:74vw;right:-6%;height:66%}.ledger{width:70vw;right:-10%}.trust{width:72vw;right:-14%}.catalog{width:65vw;right:-5%}.chat{width:75vw;right:-16%}.system{width:72vw;right:-12%}
   .project-detail>div{display:block;padding-left:40px;padding-right:0}.project.open .project-detail>div{padding-bottom:36px}.project-short{max-width:300px;font-size:17px}.project-body{margin-top:18px;max-width:300px}.facts{margin-top:24px;max-width:290px}
   .profile{padding:96px 5vw 76px}.profile-intro{display:block;margin:38px 0 80px}.profile-intro h2{font-size:clamp(3.6rem,14.5vw,6.4rem)}.profile-intro p{margin-top:28px}.profile-points>div{grid-template-columns:36px 1fr;padding:18px 0 28px}.profile-points p{grid-column:2}
+  .reel{padding:84px 5vw 76px}.text-stream{--reel-font:clamp(2.35rem,10.5vw,3.6rem)}.reel-hint{font-size:9px}.reel-hint::before,.reel-hint::after{width:22px}
   .contact{min-height:680px;align-items:flex-start;padding:96px 5vw 64px}.contact h2{font-size:clamp(3.8rem,15.5vw,6.2rem)}.contact-light{width:88vw;right:-46vw;top:auto;bottom:-26vw;transform:none}.contact-content>p{margin-top:28px}.contact-buttons{max-width:320px}
   footer{padding:17px 5vw;font-size:8px;flex-wrap:wrap}
 }
@@ -286,6 +305,17 @@ footer{display:flex;justify-content:space-between;gap:16px;padding:19px 4.6vw;co
     <div class="profile-points" id="profilePoints"></div>
   </section>
 
+  <section id="reel" class="reel" aria-label="Text reel">
+    <div class="reel-glow" aria-hidden="true"></div>
+    <div class="text-stream" id="textStream">
+      <p class="text-stream-prefix" id="reelPrefix">Let&rsquo;s</p>
+      <div class="text-stream-viewport" id="reelViewport">
+        <div class="text-stream-track" id="reelTrack"></div>
+      </div>
+      <p class="reel-hint" id="reelHint">Scroll to change the momentum</p>
+    </div>
+  </section>
+
   <section id="contact" class="contact">
     <div class="contact-light" aria-hidden="true"></div>
     <div class="contact-content">
@@ -309,14 +339,14 @@ footer{display:flex;justify-content:space-between;gap:16px;padding:19px 4.6vw;co
 <script>
 var CONTACT={whatsapp:"https://wa.me/6282121046474",email:"mailto:alfan.freeze@gmail.com",linkedin:"https://www.linkedin.com/in/alfan-rlyan-b5a231111/"};
 var CONTENT={
-en:{nav:["Work","Profile","Contact"],availability:"Available for the right kind of work",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Working across products, systems, and the operational complexity in between.",scroll:"Scroll to explore",workLabel:"Selected work",workIntro:"Systems built around how work actually moves.",workSub:"A selection of the work I keep coming back to — hover any project to preview its notes, click to keep them open.",open:"View notes",close:"Close notes",profileLabel:"Profile",profileTitle:["From 2014,","in the parts that","need to hold up."],profileBody:"I work best when the problem has some weight to it: business rules that do not fit neatly on a diagram, teams that need a shared source of truth, or a workflow that has quietly outgrown the way it is being handled.",profileMeta:[["BUILD","Web products, internal tools, APIs, automation."],["OPERATE","Systems shaped for day-to-day use — not just a demo."],["TRUST","Experience around digital identity, PKI/CA, governance, and audit work."]],contactLabel:"Get in touch",contactTitle:["Have a problem","worth solving?"],contactText:"I\u2019m open to full-time roles, selected freelance work, and conversations with people building something that needs care.",email:"Email me",whatsapp:"Chat on WhatsApp",linkedin:"Connect on LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
+en:{nav:["Work","Profile","Contact"],availability:"Available for the right kind of work",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Working across products, systems, and the operational complexity in between.",scroll:"Scroll to explore",workLabel:"Selected work",workIntro:"Systems built around how work actually moves.",workSub:"A selection of the work I keep coming back to — hover any project to preview its notes, click to keep them open.",open:"View notes",close:"Close notes",profileLabel:"Profile",profileTitle:["From 2014,","in the parts that","need to hold up."],profileBody:"I work best when the problem has some weight to it: business rules that do not fit neatly on a diagram, teams that need a shared source of truth, or a workflow that has quietly outgrown the way it is being handled.",profileMeta:[["BUILD","Web products, internal tools, APIs, automation."],["OPERATE","Systems shaped for day-to-day use — not just a demo."],["TRUST","Experience around digital identity, PKI/CA, governance, and audit work."]],reelPrefix:"Let’s",reelItems:["Build","Operate","Automate","Ship"],reelHint:"Scroll to change the momentum",contactLabel:"Get in touch",contactTitle:["Have a problem","worth solving?"],contactText:"I\u2019m open to full-time roles, selected freelance work, and conversations with people building something that needs care.",email:"Email me",whatsapp:"Chat on WhatsApp",linkedin:"Connect on LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
 {no:"01",category:"ENTERPRISE OPERATIONS",title:["OOH Asset","& Contract","ERP"],short:"Assets, contracts, payment schedules, and revenue in one connected operating system.",body:"Built for the daily reality of outdoor advertising: availability needs to remain accurate, contracts need to drive the right next steps, and finance needs a clear picture without chasing it across spreadsheets.",facts:["Live asset availability","Contract-driven workflows","Revenue & profitability"],art:"board"},
 {no:"02",category:"FINANCE OPERATIONS",title:["Billing","& Finance","Systems"],short:"Making invoices, payments, and operational finance easier to trace.",body:"Systems designed around the less glamorous but critical parts of business: billing flows, financial records, status changes, and the information teams need to follow through.",facts:["Invoice-to-payment tracing","Clear payment status","Operational reporting"],art:"ledger"},
 {no:"03",category:"DIGITAL TRUST",title:["Digital","Signature","Operations"],short:"The bridge between identity, registration, certificates, and people doing the work.",body:"Digital-signature portals and internal monitoring for registration and certificate-lifecycle workflows — where accurate records, controls, and dependable integrations matter.",facts:["Certificate lifecycle tracking","Activity monitoring","Audit-ready records"],art:"trust"},
 {no:"04",category:"PRODUCT OPERATIONS",title:["Product","& Catalog","Management"],short:"A calmer way to manage a busy and growing product catalog.",body:"A role-aware product operations system for retail. The surface stays simple, while the underlying structure is ready for more products, more people, and more everyday routine.",facts:["Built for a growing catalog","Role-based access","Search & filters"],art:"catalog"},
 {no:"05",category:"CUSTOMER OPERATIONS",title:["AI Customer","Response","Workflow"],short:"Faster conversations, without losing the human view of what is happening.",body:"An AI-assisted WhatsApp response workflow with conversation context, monitoring, persistence, and rate limits — built to help a team move faster without making the operation opaque.",facts:["Faster first responses","Context-aware replies","Monitoring dashboard"],art:"chat"},
 {no:"06",category:"INTERNAL PRODUCTS",title:["Business","Tools &","Automation"],short:"The systems behind the system — the ones teams return to every day.",body:"Internal web applications, APIs, and workflows shaped around the practical details that keep operations moving: people, data, process, and the exceptions in between.",facts:["Built for daily team use","Handles process exceptions","Less manual, repetitive work"],art:"system"}]},
-id:{nav:["Karya","Profil","Kontak"],availability:"Lagi open buat kerjaan yang cocok",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Bolak-balik ngurus produk, sistem, sama segala keribetannya di balik layar.",scroll:"Scroll ke bawah",workLabel:"Karya pilihan",workIntro:"Sistem yang dibangun ngikutin cara kerja aslinya di lapangan.",workSub:"Pilihan kerjaan yang paling sering gue pegang — arahin kursor buat intip catatannya, klik buat biarin kebuka.",open:"Lihat catatan",close:"Tutup catatan",profileLabel:"Profil",profileTitle:["Dari 2014,","di bagian yang","harus tetap jalan."],profileBody:"Gue paling sreg kalau masalahnya emang berbobot: aturan bisnis yang nggak bisa digambar rapi di diagram, tim yang butuh satu pegangan data yang sama, atau workflow yang diam-diam udah kegedean buat cara lama.",profileMeta:[["BUILD","Produk web, tools internal, API, sama automation."],["OPERATE","Sistem yang dibikin buat dipakai harian — bukan cuma buat demo doang."],["TRUST","Berpengalaman di urusan identitas digital, PKI/CA, governance, sampai audit."]],contactLabel:"Hubungi gue",contactTitle:["Punya masalah","yang pengen diberesin?"],contactText:"Gue lagi terbuka buat posisi full-time, freelance pilihan, atau sekadar ngobrol sama orang-orang yang lagi bangun sesuatu dan butuh dikerjain dengan serius.",email:"Email gue aja",whatsapp:"Chat di WhatsApp",linkedin:"Connect di LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
+id:{nav:["Karya","Profil","Kontak"],availability:"Lagi open buat kerjaan yang cocok",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Bolak-balik ngurus produk, sistem, sama segala keribetannya di balik layar.",scroll:"Scroll ke bawah",workLabel:"Karya pilihan",workIntro:"Sistem yang dibangun ngikutin cara kerja aslinya di lapangan.",workSub:"Pilihan kerjaan yang paling sering gue pegang — arahin kursor buat intip catatannya, klik buat biarin kebuka.",open:"Lihat catatan",close:"Tutup catatan",profileLabel:"Profil",profileTitle:["Dari 2014,","di bagian yang","harus tetap jalan."],profileBody:"Gue paling sreg kalau masalahnya emang berbobot: aturan bisnis yang nggak bisa digambar rapi di diagram, tim yang butuh satu pegangan data yang sama, atau workflow yang diam-diam udah kegedean buat cara lama.",profileMeta:[["BUILD","Produk web, tools internal, API, sama automation."],["OPERATE","Sistem yang dibikin buat dipakai harian — bukan cuma buat demo doang."],["TRUST","Berpengalaman di urusan identitas digital, PKI/CA, governance, sampai audit."]],reelPrefix:"Yuk",reelItems:["Bangun","Jalankan","Otomasi","Rilis"],reelHint:"Scroll buat ngubah momentumnya",contactLabel:"Hubungi gue",contactTitle:["Punya masalah","yang pengen diberesin?"],contactText:"Gue lagi terbuka buat posisi full-time, freelance pilihan, atau sekadar ngobrol sama orang-orang yang lagi bangun sesuatu dan butuh dikerjain dengan serius.",email:"Email gue aja",whatsapp:"Chat di WhatsApp",linkedin:"Connect di LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
 {no:"01",category:"ENTERPRISE OPERATIONS",title:["OOH Asset","& Contract","ERP"],short:"Aset, kontrak, jadwal bayar, sama revenue — semuanya nyambung di satu sistem.",body:"Dibikin buat realita bisnis iklan luar ruang: ketersediaan billboard harus akurat, kontrak harus jelas next step-nya apa, dan tim finance bisa lihat kondisi tanpa harus ngubek-ngubek spreadsheet.",facts:["Ketersediaan aset selalu update","Workflow berbasis kontrak","Revenue & profit terpantau jelas"],art:"board"},
 {no:"02",category:"FINANCE OPERATIONS",title:["Billing","& Finance","Systems"],short:"Biar invoice, pembayaran, sama keuangan operasional gampang ditelusurin.",body:"Fokusnya di bagian bisnis yang nggak glamor tapi krusial banget: alur billing, catatan keuangan, perubahan status, sama info yang tim butuhin buat follow-up.",facts:["Penelusuran invoice sampai lunas","Status pembayaran jelas","Laporan operasional"],art:"ledger"},
 {no:"03",category:"DIGITAL TRUST",title:["Digital","Signature","Operations"],short:"Jembatan antara identitas, registrasi, sertifikat, sama orang-orang yang ngerjainnya.",body:"Portal tanda tangan digital plus monitoring internal buat workflow registrasi dan lifecycle sertifikat — di sini catatan yang akurat, kontrol, sama integrasi yang bisa diandelin itu harga mati.",facts:["Lifecycle sertifikat terpantau","Monitoring aktivitas","Catatan siap audit"],art:"trust"},
@@ -334,6 +364,75 @@ function artHTML(type){
   return '<div class="art system" aria-hidden="true"><div class="system-panel"><small>PROCESS / READY</small><div class="system-line"><i></i><span>INPUT</span></div><div class="system-line active"><i></i><span>WORKFLOW</span></div><div class="system-line"><i></i><span>OUTPUT</span></div></div><div class="system-orb"></div></div>';
 }
 var lang="en", activeIdx=null;
+/* TEXT REEL — vanilla port of the ObsidianUI TextStream effect */
+var reelCopyCount=2, reelCurrentY=0, reelDistance=0, reelCurrentVelocity=0.6, reelTargetVelocity=0.6, reelLastDirection=1, reelScrollTimeout=null, reelLastScrollY=window.scrollY||0, reelVisible=true, reelLastTime=null;
+var reelReduced=window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function reelWrap(value,min,max){var range=max-min;if(!range)return min;return min+(((value-min)%range)+range)%range;}
+function buildReelTrack(){
+  var track=document.getElementById("reelTrack"); if(!track)return;
+  var items=(CONTENT[lang]&&CONTENT[lang].reelItems)||[];
+  if(!items.length){track.innerHTML="";return;}
+  var html="";
+  for(var c=0;c<reelCopyCount;c++){
+    html+='<div class="text-stream-copy"'+(c===0?' id="reelContent"':' aria-hidden="true"')+'>';
+    for(var i=0;i<items.length;i++){ html+='<div class="text-stream-item">'+esc(items[i])+'<i>.</i></div>'; }
+    html+="</div>";
+  }
+  track.innerHTML=html;
+  track.style.transform="translate3d(0,"+reelCurrentY+"px,0)";
+}
+function measureReel(){
+  var content=document.getElementById("reelContent");
+  var viewport=document.getElementById("reelViewport");
+  if(!content||!viewport)return;
+  var distance=content.offsetHeight;
+  var containerHeight=viewport.offsetHeight;
+  if(!distance||!containerHeight)return;
+  var next=Math.max(2,Math.ceil(containerHeight/distance)+2);
+  if(next!==reelCopyCount){ reelCopyCount=next; buildReelTrack(); measureReel(); return; }
+  reelDistance=distance;
+  reelCurrentY=reelWrap(reelCurrentY,-distance,0);
+  var track=document.getElementById("reelTrack");
+  if(track) track.style.transform="translate3d(0,"+reelCurrentY+"px,0)";
+}
+function buildReel(){
+  buildReelTrack();
+  if(window.requestAnimationFrame) window.requestAnimationFrame(measureReel); else measureReel();
+}
+function reelTick(now){
+  window.requestAnimationFrame(reelTick);
+  if(reelReduced||!reelVisible||!reelDistance){ reelLastTime=now; return; }
+  if(reelLastTime==null) reelLastTime=now;
+  var deltaTime=Math.min(64,now-reelLastTime); reelLastTime=now;
+  var frameFactor=deltaTime/(1000/60);
+  reelCurrentVelocity+=(reelTargetVelocity-reelCurrentVelocity)*0.14;
+  reelCurrentY+=reelCurrentVelocity*frameFactor;
+  reelCurrentY=reelWrap(reelCurrentY,-reelDistance,0);
+  var track=document.getElementById("reelTrack");
+  if(track) track.style.transform="translate3d(0,"+reelCurrentY+"px,0)";
+}
+function applyReelScroll(delta){
+  if(!delta||reelReduced)return;
+  var baseSpeed=0.6, maxBoost=12;
+  var direction=delta>0?-1:1;
+  var boost=Math.min(maxBoost,baseSpeed+Math.pow(Math.abs(delta),1.2)*0.08);
+  reelLastDirection=direction;
+  reelTargetVelocity=direction*boost;
+  window.clearTimeout(reelScrollTimeout);
+  reelScrollTimeout=window.setTimeout(function(){ reelTargetVelocity=reelLastDirection*baseSpeed; },120);
+}
+window.addEventListener("wheel",function(e){ applyReelScroll(e.deltaY); },{passive:true});
+window.addEventListener("scroll",function(){
+  var next=window.scrollY||0;
+  applyReelScroll(next-reelLastScrollY);
+  reelLastScrollY=next;
+},{passive:true});
+window.addEventListener("resize",function(){ measureReel(); });
+if("IntersectionObserver" in window){
+  var reelEl=document.getElementById("reel");
+  if(reelEl) new IntersectionObserver(function(entries){ reelVisible=entries[0].isIntersecting; },{threshold:0.02}).observe(reelEl);
+}
+if(!reelReduced&&window.requestAnimationFrame) window.requestAnimationFrame(reelTick);
 function render(){
   var t=CONTENT[lang];
   document.documentElement.lang = lang==="id"?"id":"en";
@@ -349,6 +448,9 @@ function render(){
   document.getElementById("profileTitle").innerHTML=t.profileTitle.map(function(l){return "<span>"+esc(l)+"</span>"}).join("");
   document.getElementById("profileBody").textContent=t.profileBody;
   document.getElementById("profilePoints").innerHTML=t.profileMeta.map(function(m,i){return '<div><span>0'+(i+1)+'</span><h3>'+esc(m[0])+'</h3><p>'+esc(m[1])+'</p></div>'}).join("");
+  var rp=document.getElementById("reelPrefix"); if(rp&&t.reelPrefix) rp.textContent=t.reelPrefix;
+  var rh=document.getElementById("reelHint"); if(rh&&t.reelHint) rh.textContent=t.reelHint;
+  buildReel();
   document.getElementById("contactLabel").textContent=t.contactLabel;
   document.getElementById("contactTitle").innerHTML=t.contactTitle.map(function(l){return "<span>"+esc(l)+"</span>"}).join("");
   document.getElementById("contactText").textContent=t.contactText;
