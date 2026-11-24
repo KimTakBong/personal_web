@@ -191,6 +191,60 @@ button{font-family:inherit}
 .facts span{padding:9px 0;border-bottom:1px solid #c1c8bc;font-weight:600}
 .facts span:first-child{border-top:1px solid #c1c8bc}
 
+/* WORK — art animations & full-visual trigger */
+.project-visual{cursor:pointer}
+/* notes alignment follows the artwork side: artwork left (flip) = text right */
+.project.flip .project-short,.project.flip .project-body{text-align:right}
+.project.flip .facts{align-items:flex-end}
+.project.flip .facts span{text-align:right}
+/* 2.1 stamp effect on the OOH board */
+.stamp{position:absolute;z-index:3;right:6%;bottom:16%;padding:8px 12px 7px;border:2px solid var(--green);border-radius:4px;color:var(--green);font-size:11px;font-weight:800;letter-spacing:.14em;text-align:center;line-height:1.25;opacity:0;transform:rotate(-12deg) scale(2.6);pointer-events:none;text-shadow:none}
+.stamp small{display:block;font-size:7px;letter-spacing:.22em;font-weight:700}
+.project.inview .stamp{animation:stampIn .55s cubic-bezier(.2,.9,.3,1.4) .25s both}
+@keyframes stampIn{0%{opacity:0;transform:rotate(-26deg) scale(2.6)}60%{opacity:1;transform:rotate(-12deg) scale(.94)}100%{opacity:.92;transform:rotate(-12deg) scale(1)}}
+.project.inview .board-frame{animation:boardShake .5s ease .3s}
+@keyframes boardShake{0%,100%{transform:translate(0,0)}25%{transform:translate(1px,-1px)}55%{transform:translate(-1px,1px)}}
+/* 2.2 animated ledger percentage */
+.amount{transition:color .3s}
+/* 2.3 digital signature: seal & card swap front/back, check draws itself */
+.trust-seal,.trust-card{transition:transform .7s cubic-bezier(.3,.7,.25,1)}
+.trust.swap .trust-seal{transform:translate(42%,52%) scale(.84) rotate(7deg);z-index:1}
+.trust.swap .trust-card{transform:translate(-58%,-62%) scale(1.14) rotate(3deg);z-index:3}
+.trust-seal b svg{width:22px;height:22px}
+.trust-seal b svg path{stroke-dasharray:26;stroke-dashoffset:26;animation:checkDraw 3s ease-in-out infinite}
+@keyframes checkDraw{0%{stroke-dashoffset:26;transform:scale(.6)}18%{stroke-dashoffset:0;transform:scale(1.18)}30%{transform:scale(1)}78%{stroke-dashoffset:0;opacity:1}92%,100%{stroke-dashoffset:26;opacity:.4}}
+/* 2.4 catalog stack: positions cycle, hover spreads the pile */
+.catalog-card{transition:transform .65s cubic-bezier(.3,.7,.25,1),background .65s,box-shadow .65s;padding:18px;display:flex;flex-direction:column;justify-content:space-between}
+.catalog-card small{color:#7a8178;font-size:9px;font-weight:700;letter-spacing:.11em}
+.catalog-card b{font-size:clamp(1.7rem,3.9vw,4.1rem);font-weight:540;line-height:.82;letter-spacing:-.08em;color:#141713}
+.catalog-card .cbars{display:flex;gap:5px}
+.catalog-card .cbars i{height:5px;flex:1;background:rgba(20,23,19,.22)}
+.catalog-card .cbars i:first-child{background:#7fb32e}
+.catalog-card .cinner{display:flex;flex-direction:column;justify-content:space-between;height:100%;opacity:0;transition:opacity .45s}
+.catalog-card.pos-front{z-index:3;background:#f0f2ed;transform:rotate(0deg) translate(0,0);box-shadow:11px 13px 21px rgba(20,24,19,.12)}
+.catalog-card.pos-front .cinner{opacity:1}
+.catalog-card.pos-mid{z-index:2;background:#ced3ca;transform:rotate(5deg) translate(14px,-5px)}
+.catalog-card.pos-back{z-index:1;background:#a6ada2;transform:rotate(15deg) translate(36px,-10px)}
+.project.flip .catalog-card.pos-mid{transform:rotate(-5deg) translate(-14px,-5px)}
+.project.flip .catalog-card.pos-back{transform:rotate(-15deg) translate(-36px,-10px)}
+.project-visual:hover .catalog-card.pos-mid{transform:rotate(9deg) translate(26px,-12px)}
+.project-visual:hover .catalog-card.pos-back{transform:rotate(22deg) translate(58px,-20px)}
+.project-visual:hover .catalog-card.pos-front{transform:rotate(-2deg) translate(-8px,4px)}
+.project.flip .project-visual:hover .catalog-card.pos-mid{transform:rotate(-9deg) translate(-26px,-12px)}
+.project.flip .project-visual:hover .catalog-card.pos-back{transform:rotate(-22deg) translate(-58px,-20px)}
+.project.flip .project-visual:hover .catalog-card.pos-front{transform:rotate(2deg) translate(8px,4px)}
+/* 2.5 AI chat: typed bubbles in a flowing stack */
+.chat-flow{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;gap:9px;padding:8px 4px;overflow:hidden}
+.chat-flow .bubble{position:relative;max-width:74%;animation:bubbleIn .3s ease both}
+.chat-flow .bubble.them{align-self:flex-start;color:#f5f7f2;background:#2d342c;border-radius:4px 13px 13px 13px}
+.chat-flow .bubble.me{align-self:flex-end;background:var(--green);color:var(--ink);border-radius:13px 4px 13px 13px;font-weight:500}
+@keyframes bubbleIn{from{opacity:0;transform:translateY(8px) scale(.96)}to{opacity:1;transform:none}}
+/* 2.6 automation: active step cycles, WORKING… shows before it moves on */
+.system-line{padding:9px 0}
+.system-line .working{margin-left:auto;font-style:normal;font-size:8px;font-weight:800;letter-spacing:.14em;color:var(--green);opacity:0;transition:opacity .25s;animation:workBlink 1s steps(2) infinite}
+.system-line.active .working{opacity:1}
+@keyframes workBlink{50%{opacity:.35}}
+
 /* PROFILE */
 .profile{position:relative;overflow:hidden;padding:158px 4.6vw 128px;background:#121411}
 .profile-glow{position:absolute;right:-9vw;top:14%;width:52vw;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(202,255,114,.15),rgba(202,255,114,.025) 38%,transparent 66%);pointer-events:none}
@@ -359,14 +413,14 @@ footer{display:flex;justify-content:space-between;gap:16px;padding:19px 4.6vw;co
 <script>
 var CONTACT={whatsapp:"https://wa.me/6282121046474",email:"mailto:alfan.freeze@gmail.com",linkedin:"https://www.linkedin.com/in/alfan-rlyan-b5a231111/"};
 var CONTENT={
-en:{nav:["Work","Profile","Contact"],availability:"Available for the right kind of work",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Working across products, systems, and the operational complexity in between.",scroll:"Scroll to explore",workLabel:"Selected work",workIntro:"Systems built around how work actually moves.",workSub:"A selection of the work I keep coming back to — hover a title or the notes button to preview, click to keep them open.",open:"View notes",close:"Close notes",profileLabel:"Profile",profileTitle:["From 2014,","in the parts that","need to hold up."],profileBody:"I work best when the problem has some weight to it: business rules that do not fit neatly on a diagram, teams that need a shared source of truth, or a workflow that has quietly outgrown the way it is being handled.",profileMeta:[["BUILD","Web products, internal tools, APIs, automation."],["OPERATE","Systems shaped for day-to-day use — not just a demo."],["TRUST","Experience around digital identity, PKI/CA, governance, and audit work."]],reelPrefix:"Let’s",reelItems:["Build","Operate","Automate","Ship"],contactLabel:"Get in touch",contactTitle:["Have a problem","worth solving?"],contactText:"I\u2019m open to full-time roles, selected freelance work, and conversations with people building something that needs care.",email:"Email me",whatsapp:"Chat on WhatsApp",linkedin:"Connect on LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
+en:{nav:["Work","Profile","Contact"],availability:"Available for the right kind of work",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Working across products, systems, and the operational complexity in between.",scroll:"Scroll to explore",workLabel:"Selected work",workIntro:"Systems built around how work actually moves.",workSub:"A selection of the work I keep coming back to — hover any project to preview its notes, click to keep them open.",open:"View notes",close:"Close notes",profileLabel:"Profile",profileTitle:["From 2014,","in the parts that","need to hold up."],profileBody:"I work best when the problem has some weight to it: business rules that do not fit neatly on a diagram, teams that need a shared source of truth, or a workflow that has quietly outgrown the way it is being handled.",profileMeta:[["BUILD","Web products, internal tools, APIs, automation."],["OPERATE","Systems shaped for day-to-day use — not just a demo."],["TRUST","Experience around digital identity, PKI/CA, governance, and audit work."]],reelPrefix:"Let’s",reelItems:["Build","Operate","Automate","Ship"],chatLines:[["them","Hi! Is this item still available?"],["me","It is — want me to hold one for you?"],["them","Yes please. Can it ship today?"],["me","Sure — order before 4pm and it ships today."],["them","What payment options do you take?"],["me","Card, bank transfer, or e-wallet."],["them","Done, just paid!"],["me","Got it — tracking number coming right up."]],contactLabel:"Get in touch",contactTitle:["Have a problem","worth solving?"],contactText:"I\u2019m open to full-time roles, selected freelance work, and conversations with people building something that needs care.",email:"Email me",whatsapp:"Chat on WhatsApp",linkedin:"Connect on LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
 {no:"01",category:"ENTERPRISE OPERATIONS",title:["OOH Asset","& Contract","ERP"],short:"Assets, contracts, payment schedules, and revenue in one connected operating system.",body:"Built for the daily reality of outdoor advertising: availability needs to remain accurate, contracts need to drive the right next steps, and finance needs a clear picture without chasing it across spreadsheets.",facts:["Live asset availability","Contract-driven workflows","Revenue & profitability"],art:"board"},
 {no:"02",category:"FINANCE OPERATIONS",title:["Billing","& Finance","Systems"],short:"Making invoices, payments, and operational finance easier to trace.",body:"Systems designed around the less glamorous but critical parts of business: billing flows, financial records, status changes, and the information teams need to follow through.",facts:["Invoice-to-payment tracing","Clear payment status","Operational reporting"],art:"ledger"},
 {no:"03",category:"DIGITAL TRUST",title:["Digital","Signature","Operations"],short:"The bridge between identity, registration, certificates, and people doing the work.",body:"Digital-signature portals and internal monitoring for registration and certificate-lifecycle workflows — where accurate records, controls, and dependable integrations matter.",facts:["Certificate lifecycle tracking","Activity monitoring","Audit-ready records"],art:"trust"},
 {no:"04",category:"PRODUCT OPERATIONS",title:["Product","& Catalog","Management"],short:"A calmer way to manage a busy and growing product catalog.",body:"A role-aware product operations system for retail. The surface stays simple, while the underlying structure is ready for more products, more people, and more everyday routine.",facts:["Built for a growing catalog","Role-based access","Search & filters"],art:"catalog"},
 {no:"05",category:"CUSTOMER OPERATIONS",title:["AI Customer","Response","Workflow"],short:"Faster conversations, without losing the human view of what is happening.",body:"An AI-assisted WhatsApp response workflow with conversation context, monitoring, persistence, and rate limits — built to help a team move faster without making the operation opaque.",facts:["Faster first responses","Context-aware replies","Monitoring dashboard"],art:"chat"},
 {no:"06",category:"INTERNAL PRODUCTS",title:["Business","Tools &","Automation"],short:"The systems behind the system — the ones teams return to every day.",body:"Internal web applications, APIs, and workflows shaped around the practical details that keep operations moving: people, data, process, and the exceptions in between.",facts:["Built for daily team use","Handles process exceptions","Less manual, repetitive work"],art:"system"}]},
-id:{nav:["Karya","Profil","Kontak"],availability:"Lagi open buat kerjaan yang cocok",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Bolak-balik ngurus produk, sistem, sama segala keribetannya di balik layar.",scroll:"Scroll ke bawah",workLabel:"Karya pilihan",workIntro:"Sistem yang dibangun ngikutin cara kerja aslinya di lapangan.",workSub:"Pilihan kerjaan yang paling sering gue pegang — arahin kursor ke judul atau tombol catatannya buat ngintip, klik buat biarin kebuka.",open:"Lihat catatan",close:"Tutup catatan",profileLabel:"Profil",profileTitle:["Dari 2014,","di bagian yang","harus tetap jalan."],profileBody:"Gue paling sreg kalau masalahnya emang berbobot: aturan bisnis yang nggak bisa digambar rapi di diagram, tim yang butuh satu pegangan data yang sama, atau workflow yang diam-diam udah kegedean buat cara lama.",profileMeta:[["BUILD","Produk web, tools internal, API, sama automation."],["OPERATE","Sistem yang dibikin buat dipakai harian — bukan cuma buat demo doang."],["TRUST","Berpengalaman di urusan identitas digital, PKI/CA, governance, sampai audit."]],reelPrefix:"Yuk",reelItems:["Bangun","Jalankan","Otomasi","Rilis"],contactLabel:"Hubungi gue",contactTitle:["Punya masalah","yang pengen diberesin?"],contactText:"Gue lagi terbuka buat posisi full-time, freelance pilihan, atau sekadar ngobrol sama orang-orang yang lagi bangun sesuatu dan butuh dikerjain dengan serius.",email:"Email gue aja",whatsapp:"Chat di WhatsApp",linkedin:"Connect di LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
+id:{nav:["Karya","Profil","Kontak"],availability:"Lagi open buat kerjaan yang cocok",role:"FULL-STACK DEVELOPER / INDONESIA",intro:"Bolak-balik ngurus produk, sistem, sama segala keribetannya di balik layar.",scroll:"Scroll ke bawah",workLabel:"Karya pilihan",workIntro:"Sistem yang dibangun ngikutin cara kerja aslinya di lapangan.",workSub:"Pilihan kerjaan yang paling sering gue pegang — arahin kursor ke project-nya buat ngintip catatannya, klik buat biarin kebuka.",open:"Lihat catatan",close:"Tutup catatan",profileLabel:"Profil",profileTitle:["Dari 2014,","di bagian yang","harus tetap jalan."],profileBody:"Gue paling sreg kalau masalahnya emang berbobot: aturan bisnis yang nggak bisa digambar rapi di diagram, tim yang butuh satu pegangan data yang sama, atau workflow yang diam-diam udah kegedean buat cara lama.",profileMeta:[["BUILD","Produk web, tools internal, API, sama automation."],["OPERATE","Sistem yang dibikin buat dipakai harian — bukan cuma buat demo doang."],["TRUST","Berpengalaman di urusan identitas digital, PKI/CA, governance, sampai audit."]],reelPrefix:"Yuk",reelItems:["Bangun","Jalankan","Otomasi","Rilis"],chatLines:[["them","Halo, barangnya masih ada?"],["me","Masih ada — mau gue keep dulu buat lo?"],["them","Boleh. Bisa kirim hari ini?"],["me","Bisa, checkout sebelum jam 4 sore ya."],["them","Bayarnya bisa pakai apa aja?"],["me","Kartu, transfer bank, atau e-wallet."],["them","Oke, udah gue bayar ya."],["me","Siap, nomor resinya segera gue kirim."]],contactLabel:"Hubungi gue",contactTitle:["Punya masalah","yang pengen diberesin?"],contactText:"Gue lagi terbuka buat posisi full-time, freelance pilihan, atau sekadar ngobrol sama orang-orang yang lagi bangun sesuatu dan butuh dikerjain dengan serius.",email:"Email gue aja",whatsapp:"Chat di WhatsApp",linkedin:"Connect di LinkedIn",footer:"ALFAN R. / FULL-STACK DEVELOPER",work:[
 {no:"01",category:"ENTERPRISE OPERATIONS",title:["OOH Asset","& Contract","ERP"],short:"Aset, kontrak, jadwal bayar, sama revenue — semuanya nyambung di satu sistem.",body:"Dibikin buat realita bisnis iklan luar ruang: ketersediaan billboard harus akurat, kontrak harus jelas next step-nya apa, dan tim finance bisa lihat kondisi tanpa harus ngubek-ngubek spreadsheet.",facts:["Ketersediaan aset selalu update","Workflow berbasis kontrak","Revenue & profit terpantau jelas"],art:"board"},
 {no:"02",category:"FINANCE OPERATIONS",title:["Billing","& Finance","Systems"],short:"Biar invoice, pembayaran, sama keuangan operasional gampang ditelusurin.",body:"Fokusnya di bagian bisnis yang nggak glamor tapi krusial banget: alur billing, catatan keuangan, perubahan status, sama info yang tim butuhin buat follow-up.",facts:["Penelusuran invoice sampai lunas","Status pembayaran jelas","Laporan operasional"],art:"ledger"},
 {no:"03",category:"DIGITAL TRUST",title:["Digital","Signature","Operations"],short:"Jembatan antara identitas, registrasi, sertifikat, sama orang-orang yang ngerjainnya.",body:"Portal tanda tangan digital plus monitoring internal buat workflow registrasi dan lifecycle sertifikat — di sini catatan yang akurat, kontrol, sama integrasi yang bisa diandelin itu harga mati.",facts:["Lifecycle sertifikat terpantau","Monitoring aktivitas","Catatan siap audit"],art:"trust"},
@@ -376,12 +430,21 @@ id:{nav:["Karya","Profil","Kontak"],availability:"Lagi open buat kerjaan yang co
 };
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function artHTML(type){
-  if(type==="board")return '<div class="art board" aria-hidden="true"><div class="board-frame"><small>WORK / IN MOTION</small><b>ASSET<br>CONTRACT<br>REVENUE</b><em></em><span>CONNECTED OPERATIONS</span></div></div>';
+  if(type==="board")return '<div class="art board" aria-hidden="true"><div class="board-frame"><small>WORK / IN MOTION</small><b>ASSET<br>CONTRACT<br>REVENUE</b><em></em><span>CONNECTED OPERATIONS</span><div class="stamp">CONNECTED<small>OPERATIONS ✓ LIVE</small></div></div></div>';
   if(type==="ledger")return '<div class="art ledger" aria-hidden="true"><div class="ledger-sheet"><small>FINANCIAL POSITION</small><div class="amount">+ 12.8%</div><div class="ledger-lines"><i></i><i></i><i></i><i></i></div><span>01. INVOICE &nbsp;&nbsp; 02. PAYMENT &nbsp;&nbsp; 03. REPORT</span></div><div class="ledger-disc"></div></div>';
-  if(type==="trust")return '<div class="art trust" aria-hidden="true"><div class="trust-seal"><span>IDENTITY</span><b>✓</b><span>VERIFIED</span></div><div class="trust-card">CERTIFICATE<br><strong>ACTIVE</strong><i></i></div></div>';
-  if(type==="catalog")return '<div class="art catalog" aria-hidden="true"><div class="catalog-card back"></div><div class="catalog-card mid"></div><div class="catalog-card front"><small>CATALOG</small><b>Things<br>in their<br>place.</b><div><i></i><i></i><i></i></div></div><span></span></div>';
-  if(type==="chat")return '<div class="art chat" aria-hidden="true"><div class="bubble b1">Can we talk about the proposal?</div><div class="bubble b2">Of course. What would you like to know?</div><div class="bubble b3">Timeline and scope.</div><div class="typing"><i></i><i></i><i></i></div></div>';
-  return '<div class="art system" aria-hidden="true"><div class="system-panel"><small>PROCESS / READY</small><div class="system-line"><i></i><span>INPUT</span></div><div class="system-line active"><i></i><span>WORKFLOW</span></div><div class="system-line"><i></i><span>OUTPUT</span></div></div><div class="system-orb"></div></div>';
+  if(type==="trust")return '<div class="art trust" aria-hidden="true"><div class="trust-seal"><span>IDENTITY</span><b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5.2 5.2L20 6.5"/></svg></b><span>VERIFIED</span></div><div class="trust-card">CERTIFICATE<br><strong>ACTIVE</strong><i></i></div></div>';
+  if(type==="catalog"){
+    var heads=[["CATALOG","Things<br>in their<br>place."],["INVENTORY","Every SKU,<br>accounted<br>for."],["PRODUCTS","Stock in<br>sync,<br>always."]];
+    var cards=heads.map(function(h,i){
+      var pos=i===0?"pos-back":(i===1?"pos-mid":"pos-front");
+      return '<div class="catalog-card '+pos+'"><div class="cinner"><small>'+h[0]+'</small><b>'+h[1]+'</b><div class="cbars"><i></i><i></i><i></i></div></div></div>';
+    }).join("");
+    return '<div class="art catalog" aria-hidden="true">'+cards+'<span></span></div>';
+  }
+  if(type==="chat")return '<div class="art chat" aria-hidden="true"><div class="chat-flow"></div></div>';
+  var steps=["INPUT","VALIDATE","WORKFLOW","AUTOMATE","OUTPUT","NOTIFY"];
+  var lines=steps.map(function(s,i){return '<div class="system-line'+(i===2?" active":"")+'"><i></i><span>'+s+'</span><em class="working">WORKING…</em></div>'}).join("");
+  return '<div class="art system" aria-hidden="true"><div class="system-panel"><small>PROCESS / READY</small>'+lines+'</div><div class="system-orb"></div></div>';
 }
 var lang="en", activeIdx=null;
 /* TEXT REEL — vanilla port of the ObsidianUI TextStream effect */
@@ -542,21 +605,72 @@ function render(){
   }
   list.querySelectorAll(".project").forEach(function(article){
     var idx=parseInt(article.querySelector("[data-idx]").getAttribute("data-idx"),10);
-    var triggers=[article.querySelector(".project-visual h2"),article.querySelector(".project-hint")];
-    triggers.forEach(function(el){
-      if(!el)return;
-      el.addEventListener("click",function(){ toggleIdx(idx,article); });
-      el.addEventListener("mouseenter",function(){ if(activeIdx!==idx) article.classList.add("preview"); });
-      el.addEventListener("mouseleave",function(){ article.classList.remove("preview"); });
-    });
-    var h=triggers[0];
+    var visual=article.querySelector(".project-visual");
+    if(visual){
+      visual.addEventListener("click",function(){ toggleIdx(idx,article); });
+      visual.addEventListener("mouseenter",function(){ if(activeIdx!==idx) article.classList.add("preview"); });
+      visual.addEventListener("mouseleave",function(){ article.classList.remove("preview"); });
+    }
+    var h=article.querySelector(".project-visual h2");
     if(h) h.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleIdx(idx,article); } });
   });
   observeProjects();
+  startChat();
   document.getElementById("langEn").classList.toggle("active",lang==="en");
   document.getElementById("langId").classList.toggle("active",lang==="id");
   document.getElementById("langEn").setAttribute("aria-pressed",lang==="en"?"true":"false");
   document.getElementById("langId").setAttribute("aria-pressed",lang==="id"?"true":"false");
+}
+/* WORK ART — 1.5s ticker: ledger %, signature swap, catalog cycle, automation steps */
+var artTick=0;
+window.setInterval(function(){
+  if(flipReduced||document.hidden)return;
+  artTick++;
+  var amt=document.querySelector(".ledger .amount");
+  if(amt) amt.textContent="+ "+(12.8+Math.random()*87.2).toFixed(1)+"%";
+  var tr=document.querySelector(".trust");
+  if(tr) tr.classList.toggle("swap");
+  var cat=document.querySelectorAll(".catalog-card");
+  if(cat.length===3){
+    var pos=["pos-back","pos-mid","pos-front"];
+    cat.forEach(function(c,i){ c.classList.remove("pos-back","pos-mid","pos-front"); c.classList.add(pos[(i+artTick)%3]); });
+  }
+  var lines=document.querySelectorAll(".system-line");
+  if(lines.length) lines.forEach(function(l,i){ l.classList.toggle("active",i===artTick%lines.length); });
+},1500);
+/* WORK ART — AI chat: bubbles typed letter by letter, replies keep coming */
+var chatRun=0;
+function startChat(){
+  var run=++chatRun;
+  var flow=document.querySelector(".chat-flow");
+  if(!flow)return;
+  var lines=(CONTENT[lang]&&CONTENT[lang].chatLines)||[];
+  if(!lines.length)return;
+  if(flipReduced){
+    flow.innerHTML=lines.slice(0,4).map(function(m){return '<div class="bubble '+m[0]+'">'+esc(m[1])+'</div>'}).join("");
+    return;
+  }
+  var idx=0;
+  function next(){
+    if(run!==chatRun||!flow.isConnected)return;
+    if(idx>0&&idx%lines.length===0) flow.innerHTML="";
+    var msg=lines[idx%lines.length]; idx++;
+    var b=document.createElement("div");
+    b.className="bubble "+msg[0];
+    flow.appendChild(b);
+    while(flow.children.length>4) flow.removeChild(flow.firstChild);
+    var text=msg[1], i=0;
+    var typer=window.setInterval(function(){
+      if(run!==chatRun){ window.clearInterval(typer); return; }
+      i++;
+      b.textContent=text.slice(0,i);
+      if(i>=text.length){
+        window.clearInterval(typer);
+        window.setTimeout(next, idx%lines.length===0?2400:1000);
+      }
+    },18);
+  }
+  next();
 }
 function scrollToSel(sel){ closeMenu(); var el=document.querySelector(sel); if(el) el.scrollIntoView({behavior:"smooth",block:"start"}); }
 function closeMenu(){ var n=document.getElementById("mobileNav"); n.classList.remove("open"); document.getElementById("menuBtn").setAttribute("aria-expanded","false"); document.getElementById("menuIconOpen").style.display=""; document.getElementById("menuIconClose").style.display="none"; document.body.style.overflow=""; }
